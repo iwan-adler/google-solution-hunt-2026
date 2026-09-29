@@ -29,7 +29,6 @@ export function SearchConsole({ onSearch, isLoading = false, initialQuery = "" }
 
   const handleVoiceToggle = () => {
     if (typeof window !== "undefined" && ("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
-      // SpeechRecognition Web API
       const SpeechRecognition =
         (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
       const recognition = new SpeechRecognition();
@@ -60,24 +59,30 @@ export function SearchConsole({ onSearch, isLoading = false, initialQuery = "" }
         setIsListening(false);
       }
     } else {
-      // Graceful fallback simulation
       setIsListening(true);
       setTimeout(() => {
-        const fallbackVoice = "Where is AL-204?";
+        const fallbackVoice = "I lost my ID card. What do I do?";
         setQuery(fallbackVoice);
         setIsListening(false);
         onSearch(fallbackVoice);
-        speakText("Voice recognized: Where is AL-204?");
-      }, 1500);
+        speakText("Voice recognized: I lost my ID card. What do I do?");
+      }, 1200);
     }
   };
 
   const promptChips = [
-    { label: "I lost my ID card", query: "I lost my ID card. What do I do?" },
-    { label: "Find AL-204", query: "I need to find AL-204" },
-    { label: "Check Pharmacy Stock", query: "Are Paracetamol and ORS available right now?" },
-    { label: "Bus #12 ETA", query: "What is the status of Bus #12 to Guntur?" },
-    { label: "Campus Emergency", query: "Campus Ambulance emergency contact" },
+    { label: "Lost ID Card", query: "I lost my ID card. What do I do?" },
+    { label: "Find AL-204", query: "Where is AL-204?" },
+    { label: "ORS Stock", query: "Is ORS available?" },
+    { label: "Prof. Ashok Kumar", query: "Where is Professor Ashok Kumar's cabin?" },
+    { label: "Campus Ambulance", query: "I need an ambulance" },
+    { label: "Library Timings", query: "When is the Central Library open?" },
+    { label: "Bus Schedule", query: "What time does the Guntur bus depart?" },
+    { label: "Mess Timings", query: "What are the hostel mess timings?" },
+    { label: "Lost Phone", query: "I lost my phone on campus. What should I do?" },
+    { label: "Placement Drive", query: "When is the next placement drive?" },
+    { label: "Exam Schedule", query: "Where can I find my exam timetable?" },
+    { label: "AC Not Working", query: "The AC in my hostel room is broken" },
   ];
 
   return (
@@ -108,7 +113,7 @@ export function SearchConsole({ onSearch, isLoading = false, initialQuery = "" }
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Ask anything (e.g. 'I lost my ID card', 'Where is AL-204?', 'Bus #12 to Guntur')"
+            placeholder="e.g. 'I lost my ID card', 'Where is AL-204?', 'Is ORS available?'"
             className="w-full bg-transparent text-sm sm:text-base text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none px-1 py-2 font-medium"
           />
 
@@ -136,7 +141,7 @@ export function SearchConsole({ onSearch, isLoading = false, initialQuery = "" }
               {isLoading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Contextualizing...</span>
+                  <span>Understanding...</span>
                 </>
               ) : (
                 <>
@@ -151,7 +156,7 @@ export function SearchConsole({ onSearch, isLoading = false, initialQuery = "" }
 
       {/* Suggested Natural Language Prompt Chips */}
       <div className="flex flex-wrap items-center justify-center gap-1.5 pt-2">
-        <span className="text-[11px] text-slate-400 font-semibold mr-1">Suggestions:</span>
+        <span className="text-[11px] text-slate-400 font-semibold mr-1">Demo Scenarios:</span>
         {promptChips.map((chip) => (
           <button
             key={chip.label}
